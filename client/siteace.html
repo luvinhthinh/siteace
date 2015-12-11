@@ -1,0 +1,115 @@
+<head>
+  <title>siteace</title>
+</head>
+
+<body>
+</body>
+
+<template name="ApplicationLayout">
+    {{> yield "navbar"}}
+    {{> yield "comment"}}
+    {{> yield "main"}}
+</template>
+
+<template name="navbar">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+                    Site Ace
+                </a>
+            </div>
+        </div>
+        <div class="container">
+            {{> loginButtons}}
+            
+            {{#if currentUser}}
+                <a href="/search">Search</a>
+            {{/if}}
+        </div>
+    </nav>
+</template>
+
+<template name="application">
+    <div class="container">
+        {{> website_form}}
+        {{> website_list}}
+    </div>
+</template>
+
+<!-- template that displays AddSite form -->
+<template name="website_form">
+	<a class="btn btn-default js-toggle-website-form" href="#">
+  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	</a>
+	<div id="website_form" class="hidden_div">
+		<form class="js-save-website-form">
+		  <div class="form-group">
+		    <label for="url">Site address</label>
+		    <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com">
+		  </div>
+		  <div class="form-group">
+		    <label for="title">Title</label>
+		    <input type="text" class="form-control" id="title" placeholder="Mysite">
+		  </div>
+		    <div class="form-group">
+		    <label for="description">Description</label>
+		    <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
+		  </div>
+
+		  <button type="submit" class="btn btn-default">Submit</button>
+		</form>
+	</div>
+</template>
+
+<!-- template that displays several website items -->
+<template name="website_list">
+	<ol>
+	{{#each websites}}
+        {{> website_item}}
+	{{/each}}
+	</ol>
+</template>
+
+<!-- template that displays individual website entries -->
+<template name="website_item">
+<li>
+	<a href="{{url}}">{{title}}</a>
+	<p>
+		{{description}}<br>
+        Created On : {{createdOn}}<br>
+        Votes : {{rate}}
+        <a href="/url/{{_id}}">Details</a>
+	</p>
+
+	<a href="#" class="btn btn-default js-upvote">
+		<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+	</a>
+	<a href="#" class="btn btn-default js-downvote">
+		<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+	</a>
+	<!-- you will be putting your up and down vote buttons in here! -->
+</li>
+</template>
+
+<!-- template that displays user comment and website description-->
+<template name="comment">
+    <div class="comment-section">
+        {{> commentsBox id=_id}}
+    </div>
+    <div>
+        Description : {{description}}
+    </div>
+</template>
+
+<!-- template that displays search Box-->
+<template name="searchBox">
+    <div class="container">
+        {{> EasySearch.Input index=websiteIndex }}
+        <ul>
+            {{#EasySearch.Each index=websiteIndex }}
+                <li>{{> website_item}}</li>
+            {{/EasySearch.Each}}
+        </ul>
+    </div>
+</template>
