@@ -102,9 +102,9 @@ Template.website_form.events({
 
         if (Meteor.user()){
             Websites.insert({
-                title:event.target.title.value,
+                title:'',
                 url:event.target.url.value,
-                description:event.target.description.value,
+                description:'',
                 createdOn:new Date(),
                 rate:0
             });
